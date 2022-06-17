@@ -12,6 +12,7 @@ const TaskList = ({ tasks }) => {
           id={task.id}
           title={task.title}
           isComplete={task.isComplete}
+          setToggleCallback={tasks.setToggleCallback}
         />
       );
     });
