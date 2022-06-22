@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import './Task.css';
 
-const Task = ({ id, title, isComplete }) => {
+const Task = ({
+  id,
+  title,
+  isComplete,
+  onClickCallback,
+  deleteTaskCallback,
+}) => {
   // const [complete, setComplete] = useState(isComplete);
   const buttonClass = isComplete ? 'tasks__item__toggle--completed' : '';
 
@@ -12,11 +18,18 @@ const Task = ({ id, title, isComplete }) => {
       {/* <button onClick={() => props.setDogAgeCallback(props.id)}>🐶</button> */}
       <button
         className={`tasks__item__toggle ${buttonClass}`}
-        onClick={() => id.setToggleCallback(id)}
+        onClick={() => onClickCallback(id)}
       >
         {title}
       </button>
-      <button className="tasks__item__remove button">x</button>
+
+      <button
+        className="tasks__item__remove button"
+        data-testid={`delete button ${id}`}
+        onClick={() => deleteTaskCallback(id)}
+      >
+        Delete
+      </button>
     </li>
   );
 };
@@ -25,7 +38,8 @@ Task.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isComplete: PropTypes.bool.isRequired,
-  setToggleCallback: PropTypes.func.isRequired,
+  onClickCallback: PropTypes.func.isRequired,
+  deleteTaskCallback: PropTypes.func.isRequired,
 };
 
 export default Task;

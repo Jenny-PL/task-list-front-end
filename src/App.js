@@ -19,23 +19,43 @@ const TASKS = [
 const App = () => {
   const [tasks, setTasks] = useState(TASKS);
 
-  const setToggle = (id) => {
+  const onClickCallback = (id) => {
     console.log('Inside SetToggle', id);
 
     const newToggleTasks = [...tasks];
     for (let task of newToggleTasks) {
       if (task.id === id) {
-        setTasks(!task.isComplete);
+        task.isComplete = !task.isComplete;
       }
+      setTasks(newToggleTasks);
     }
   };
+
+  const deleteTask = (id) => {
+    console.log('Inside deleteTasks', id);
+
+    const newTasks = tasks.filter((task) => task.id !== id);
+    setTasks(newTasks);
+
+    // const newCats = cats.filter((cat) => cat.id !== id);
+    // setCats(newCats);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <div>{<TaskList tasks={TASKS} setToggleCallback={setToggle} />}</div>
+        <div>
+          {
+            <TaskList
+              tasks={tasks}
+              onClickCallback={onClickCallback}
+              deleteTaskCallback={deleteTask}
+            />
+          }
+        </div>
       </main>
     </div>
   );
