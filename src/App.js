@@ -1,7 +1,8 @@
 import React from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const TASKS = [
   {
@@ -19,17 +20,57 @@ const TASKS = [
 const App = () => {
   const [tasks, setTasks] = useState(TASKS);
 
+  useEffect(() => {
+    getTasksFromApi();
+  }, []);
+
+  //helper function
+  const getTasksFromApi = () => {
+    axios
+      .get('https://task-list-api-c17.herokuapp.com/tasks')
+      .then((response) => {
+        setTasks(response.data);
+      })
+      .catch((error) => {
+        console.log('Could not get tasks');
+      });
+  };
+
   const onClickCallback = (id) => {
     console.log('Inside SetToggle', id);
-
+    let targetTask;
     const newToggleTasks = [...tasks];
     for (let task of newToggleTasks) {
       if (task.id === id) {
-        task.isComplete = !task.isComplete;
+        targetTask = task}
+        // targetTask.isComplete = !targetTask.isComplete;
       }
       setTasks(newToggleTasks);
     }
   };
+
+    axios.patch(`https://task-list-api-c17.herokuapp.com/tasks/${targetTask.id}`)
+    .then((response) => {
+      targetTask.isComplete = !targetTask.isComplete;
+      setTasks(newToggleTasks)
+    }
+    .catch((error) => {
+      console.log("Couldn't update task");
+    });
+    setTasks(newToggleTasks)
+  };
+
+
+  //   let targetTask;
+  //   const newToggleTasks = [...tasks];
+  //   for (let task of newToggleTasks) {
+  //     if (task.id === id) {
+  //       targetTask = task}
+  //       // targetTask.isComplete = !targetTask.isComplete;
+  //     }
+  //     setTasks(newToggleTasks);
+  //   }
+  // };
 
   const deleteTask = (id) => {
     console.log('Inside deleteTasks', id);
