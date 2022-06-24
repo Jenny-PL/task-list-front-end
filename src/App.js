@@ -38,48 +38,45 @@ const App = () => {
 
   const onClickCallback = (id) => {
     console.log('Inside SetToggle', id);
-    let targetTask;
+    // let targetTask;
     const newToggleTasks = [...tasks];
+    let targetTask;
     for (let task of newToggleTasks) {
       if (task.id === id) {
-        targetTask = task}
-        // targetTask.isComplete = !targetTask.isComplete;
+        targetTask = task;
       }
-      setTasks(newToggleTasks);
     }
+
+    axios
+      .patch(
+        `https://task-list-api-c17.herokuapp.com/tasks/${targetTask.id}/mark_complete`,
+        {
+          isComplete: targetTask.isComplete,
+        }
+      )
+
+      .then((response) => {
+        console.log('Updating isComplete');
+        targetTask.isComplete = !targetTask.isComplete;
+        setTasks(newToggleTasks);
+      })
+      .catch((error) => {
+        console.log("Couldn't update task");
+      });
   };
-
-    axios.patch(`https://task-list-api-c17.herokuapp.com/tasks/${targetTask.id}`)
-    .then((response) => {
-      targetTask.isComplete = !targetTask.isComplete;
-      setTasks(newToggleTasks)
-    }
-    .catch((error) => {
-      console.log("Couldn't update task");
-    });
-    setTasks(newToggleTasks)
-  };
-
-
-  //   let targetTask;
-  //   const newToggleTasks = [...tasks];
-  //   for (let task of newToggleTasks) {
-  //     if (task.id === id) {
-  //       targetTask = task}
-  //       // targetTask.isComplete = !targetTask.isComplete;
-  //     }
-  //     setTasks(newToggleTasks);
-  //   }
-  // };
 
   const deleteTask = (id) => {
     console.log('Inside deleteTasks', id);
 
-    const newTasks = tasks.filter((task) => task.id !== id);
-    setTasks(newTasks);
-
-    // const newCats = cats.filter((cat) => cat.id !== id);
-    // setCats(newCats);
+    axios
+      .delete(`https://task-list-api-c17.herokuapp.com/tasks/${id}`)
+      .then((respone) => {
+        const newTasks = tasks.filter((task) => task.id !== id);
+        setTasks(newTasks);
+      })
+      .catch((error) => {
+        console.log('Unable to delete');
+      });
   };
 
   return (
