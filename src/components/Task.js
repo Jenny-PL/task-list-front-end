@@ -9,6 +9,7 @@ const Task = ({
   isComplete,
   onClickCallback,
   deleteTaskCallback,
+  description,
 }) => {
   // const [complete, setComplete] = useState(isComplete);
   const buttonClass = isComplete ? 'tasks__item__toggle--completed' : '';
@@ -22,7 +23,8 @@ const Task = ({
       >
         {title}
       </button>
-
+      {/* added descprtion */}
+      <p>{description}</p>
       <button
         className="tasks__item__remove button"
         data-testid={`delete button ${id}`}
@@ -35,6 +37,8 @@ const Task = ({
 };
 
 Task.propTypes = {
+  // added description:
+  description: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isComplete: PropTypes.bool.isRequired,

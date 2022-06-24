@@ -1,20 +1,21 @@
 import React from 'react';
 import TaskList from './components/TaskList.js';
+import NewTaskForm from './components/NewTaskForm';
 import './App.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const TASKS = [
-  {
-    id: 1,
-    title: 'Mow the lawn',
-    isComplete: false,
-  },
-  {
-    id: 2,
-    title: 'Cook Pasta',
-    isComplete: true,
-  },
+  // {
+  //   id: 1,
+  //   title: 'Mow the lawn',
+  //   isComplete: false,
+  // },
+  // {
+  //   id: 2,
+  //   title: 'Cook Pasta',
+  //   isComplete: true,
+  // },
 ];
 
 const App = () => {
@@ -70,12 +71,24 @@ const App = () => {
 
     axios
       .delete(`https://task-list-api-c17.herokuapp.com/tasks/${id}`)
-      .then((respone) => {
+      .then((response) => {
         const newTasks = tasks.filter((task) => task.id !== id);
         setTasks(newTasks);
       })
       .catch((error) => {
         console.log('Unable to delete');
+      });
+  };
+
+  const makeNewTask = (data) => {
+    console.log(data);
+    axios
+      .post('https://task-list-api-c17.herokuapp.com/tasks', data)
+      .then((response) => {
+        getTasksFromApi();
+      })
+      .catch((error) => {
+        console.log("Couldn't make a new task.");
       });
   };
 
@@ -86,14 +99,13 @@ const App = () => {
       </header>
       <main>
         <div>
-          {
-            <TaskList
-              tasks={tasks}
-              onClickCallback={onClickCallback}
-              deleteTaskCallback={deleteTask}
-            />
-          }
+          <TaskList
+            tasks={tasks}
+            onClickCallback={onClickCallback}
+            deleteTaskCallback={deleteTask}
+          />
         </div>
+        <NewTaskForm handleSubmission={makeNewTask}></NewTaskForm>
       </main>
     </div>
   );

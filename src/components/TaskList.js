@@ -8,6 +8,8 @@ const TaskList = ({ tasks, onClickCallback, deleteTaskCallback }) => {
     return tasks.map((task) => {
       return (
         <Task
+          // added description
+          description={task.description}
           key={task.id}
           id={task.id}
           title={task.title}
@@ -24,6 +26,8 @@ const TaskList = ({ tasks, onClickCallback, deleteTaskCallback }) => {
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(
     PropTypes.shape({
+      // added description:
+      descrption: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       isComplete: PropTypes.bool.isRequired,
