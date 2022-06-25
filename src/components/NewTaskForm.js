@@ -4,9 +4,9 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const defaultTask = {
-  title: 'title',
+  title: '',
   isComplete: false,
-  description: 'description',
+  description: '',
 };
 
 const NewTaskForm = (props) => {
@@ -25,7 +25,18 @@ const NewTaskForm = (props) => {
 
   const handleFormSubmission = (event) => {
     event.preventDefault();
-    props.handleSubmission(taskData);
+
+    props.handleSubmission({
+      title: taskData.title,
+      isComplete: taskData.isComplete,
+      description: taskData.description,
+    });
+
+    setTaskData({
+      title: '',
+      isComplete: false,
+      description: '',
+    });
   };
 
   return (
@@ -51,13 +62,13 @@ const NewTaskForm = (props) => {
         value={taskData.description}
         onChange={handleFormInput}
       ></input>
-      <input type="submit"></input>
+      <input type="submit" value="Add Task"></input>
     </form>
   );
 };
 
 NewTaskForm.propTypes = {
-  handleFormSubmission: PropTypes.func.isRequired,
+  handleSubmission: PropTypes.func.isRequired,
 };
 
 export default NewTaskForm;
